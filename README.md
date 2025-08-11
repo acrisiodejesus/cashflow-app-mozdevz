@@ -1,12 +1,37 @@
-# React + Vite
+# CashFlow Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![App Preview]("./screenshot-cashflow.png") <!-- Adicione uma imagem real do seu projeto aqui -->
 
-Currently, two official plugins are available:
+## 📌 Visão Geral
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+O **CashFlow** é uma aplicação web moderna para gestão de fluxo de caixa pessoal. Desenvolvido com React.js e ApexCharts, oferece visualizações intuitivas para acompanhamento financeiro com um design profissional, minimalista e sofisticado.
 
-## Expanding the ESLint configuration
+## ✨ Funcionalidades Principais
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 📊 **Dashboard interativo** com gráficos profissionais usando ApexCharts
+- 💰 Registro de entradas e saidas
+- 🔍 Visualização detalhada de transações
+- ✏️ CRUD completo para transações (Criar, Ler, Atualizar, Deletar)
+- 📱 Design 100% responsivo
+- 🎨 Interface profissional com paleta de cores sofisticada e efeitos visuais
+- 🔄 Animações suaves e transições
+
+## 🛠️ Tecnologias Utilizadas
+
+### Frontend
+- ![React](https://img.shields.io/badge/-React-61DAFB?logo=react&logoColor=white&style=flat)
+- ![ApexCharts](https://img.shields.io/badge/-ApexCharts-FF4560?logo=apexcharts&logoColor=white&style=flat)
+- ![Tailwind CSS](https://img.shields.io/badge/-Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white&style=flat)
+- ![React Icons](https://img.shields.io/badge/-React_Icons-F7DF1E?logo=react&logoColor=white&style=flat)
+
+## 📦 Pré-requisitos
+
+- npm (v6 ou superior) ou yarn
+- Navegador moderno (Chrome, Firefox, Edge)
+
+## 🚀 Instalação
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/oscarndodo/cashflow-app-mozdevz.git
+   cd cashflow-app-mozdevz
