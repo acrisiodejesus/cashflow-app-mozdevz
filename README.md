@@ -35,3 +35,5 @@ O **CashFlow** é uma aplicação web moderna para gestão de fluxo de caixa pes
    ```bash
    git clone https://github.com/oscarndodo/cashflow-app-mozdevz.git
    cd cashflow-app-mozdevz
+   npm i
+   npm run dev
