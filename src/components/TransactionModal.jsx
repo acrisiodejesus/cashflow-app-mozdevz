@@ -1,7 +1,7 @@
 
 import { motion } from "framer-motion";
 
-export default function TransactionModal({ formData, setFormData, currentTransaction, onSubmit, onClose, colorPalette }) {
+export default function TransactionModal({ formData, setFormData, currentTransaction, onSubmit, onClose }) {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -20,8 +20,8 @@ export default function TransactionModal({ formData, setFormData, currentTransac
                 }}
                 className="w-full flex justify-center"
             >
-                <div className="bg-white rounded-lg shadow-xl max-w-md w-full" style={{ backgroundColor: colorPalette.card }}>
-                    <div className="px-6 py-4 border-b flex justify-between items-center" style={{ borderColor: colorPalette.background }}>
+                <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+                    <div className="px-6 py-4 border-b flex justify-between items-center">
                         <h3 className="text-xl text-[#10B981] font-black uppercase px-4 mt-10">
                             {currentTransaction ? 'Editar Transação' : 'Nova Transação'}
                         </h3>
@@ -35,7 +35,7 @@ export default function TransactionModal({ formData, setFormData, currentTransac
                     <form onSubmit={onSubmit} className="p-6 px-8 w-full">
                         <div className="space-y-4">
                             <div>
-                                <label htmlFor="type" className="block text-sm font-medium" style={{ color: colorPalette.text }}>
+                                <label htmlFor="type" className="block text-sm font-medium">
                                     Tipo
                                 </label>
                                 <select
@@ -52,7 +52,7 @@ export default function TransactionModal({ formData, setFormData, currentTransac
                             </div>
 
                             <div>
-                                <label htmlFor="description" className="block text-sm font-medium" style={{ color: colorPalette.text }}>
+                                <label htmlFor="description" className="block text-sm font-medium" >
                                     Descrição
                                 </label>
                                 <input
@@ -68,7 +68,7 @@ export default function TransactionModal({ formData, setFormData, currentTransac
                             </div>
 
                             <div>
-                                <label htmlFor="amount" className="block text-sm font-medium" style={{ color: colorPalette.text }}>
+                                <label htmlFor="amount" className="block text-sm font-medium" >
                                     Valor (MT)
                                 </label>
                                 <input
@@ -86,7 +86,7 @@ export default function TransactionModal({ formData, setFormData, currentTransac
                             </div>
 
                             <div>
-                                <label htmlFor="date" className="block text-sm font-medium" style={{ color: colorPalette.text }}>
+                                <label htmlFor="date" className="block text-sm font-medium" >
                                     Data
                                 </label>
                                 <input

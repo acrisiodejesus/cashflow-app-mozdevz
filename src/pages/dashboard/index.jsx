@@ -9,14 +9,7 @@ import { TbCashRegister } from 'react-icons/tb';
 import { LuActivity } from 'react-icons/lu';
 import { PiCirclesThreePlusBold } from 'react-icons/pi';
 
-// Paleta de cores profissional com brilhos e gradientes
-const colorPalette = {
-    accent: '#F59E0B', // Âmbar
-    income: '#10B981', // Esmeralda
-    expense: '#EF4444', // Vermelho
-};
-
-const CashFlowDashboard = () => {
+const Dashboard = () => {
     // Estados
     const [isLoading, setIsLoading] = useState(true);
     const [summaryData, setSummaryData] = useState(null);
@@ -138,12 +131,12 @@ const CashFlowDashboard = () => {
                 {
                     name: 'Entradas',
                     data: rawData.incomeData,
-                    color: colorPalette.income
+                    color: "#10B981"
                 },
                 {
                     name: 'Saídas',
                     data: rawData.expenseData,
-                    color: colorPalette.expense
+                    color: "#EF4444"
                 }
             ],
             options: {
@@ -202,8 +195,13 @@ const CashFlowDashboard = () => {
             <div className="max-w-7xl mx-auto">
                 {/* Cabeçalho */}
                 <header className="mb-8 text-gray-900">
-                    <h1 className="text-3xl flex items-center font-bold uppercase text-[#10B981]"><TbCashRegister size={36} /> CashFlow</h1>
-                    <p className='opacity-60 ml-1'>Controle de Fluxo de Caixa</p>
+                    <div>
+                        <h1 className="text-3xl flex items-center font-bold uppercase text-[#10B981]"><TbCashRegister size={36} /> CashFlow</h1>
+                        <p className='opacity-60 ml-1'>Controle de Fluxo de Caixa</p>
+                    </div>
+                    <div>
+
+                    </div>
                 </header>
 
 
@@ -265,7 +263,7 @@ const CashFlowDashboard = () => {
                                 Nova Transação
                             </button>
                         </motion.div>
-                        <SummaryCards summary={summaryData} colorPalette={colorPalette} />
+                        <SummaryCards summary={summaryData} />
                     </div>
                 </div>
 
@@ -279,15 +277,11 @@ const CashFlowDashboard = () => {
                         type: "spring"
                     }}>
 
-                    <div className="overflow-hidden mb-20" style={{
-                        backgroundColor: colorPalette.card,
-                        borderColor: colorPalette.border
-                    }}>
+                    <div className="overflow-hidden mb-20">
                         <TransactionList
                             transactions={transactions}
                             onEdit={handleEdit}
                             onDelete={handleDelete}
-                            colorPalette={colorPalette}
                         />
                     </div>
                 </motion.div>
@@ -305,7 +299,7 @@ const CashFlowDashboard = () => {
                         setIsModalOpen(false);
                         resetForm();
                     }}
-                    colorPalette={colorPalette}
+
                 />
             )}
         </div>
@@ -368,4 +362,4 @@ async function fetchCashFlowData(range) {
     return mockData[range] || mockData.monthly;
 }
 
-export default CashFlowDashboard;
+export default Dashboard;
