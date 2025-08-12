@@ -28,8 +28,8 @@ export default function TransactionList({ transactions, onEdit, onDelete }) {
                         ) : (
                             transactions.map((transaction) => (
                                 <tr key={transaction.id} className="hover:bg-white">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                        {new Date(transaction.date).toLocaleDateString('pt-MZ')}
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-normal">
+                                        {new Date(transaction.date).toLocaleDateString('pt')}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium"  >
                                         {transaction.description}

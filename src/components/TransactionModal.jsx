@@ -46,6 +46,7 @@ export default function TransactionModal({ formData, setFormData, currentTransac
                                     className="mt-1 block w-full rounded-md  focus:border-teal-600 focus:font-semibold text-gray-800 border-2 bg-white outline-[#10B981]/80 focus:ring-teal-600 py-3 px-2 font-semibold"
                                     required
                                 >
+                                    <option value="">Selecione</option>
                                     <option value="income">Entrada</option>
                                     <option value="expense">Saida</option>
                                 </select>

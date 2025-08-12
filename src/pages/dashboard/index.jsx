@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import TransactionList from '../../components/TransactionList';
-import SummaryCards from '../../components/SummaryCards';
 import TransactionModal from '../../components/TransactionModal';
 import Chart from 'react-apexcharts';
 import { motion } from 'framer-motion';
@@ -8,34 +7,74 @@ import { FiLoader } from 'react-icons/fi';
 import { TbCashRegister } from 'react-icons/tb';
 import { LuActivity } from 'react-icons/lu';
 import { PiCirclesThreePlusBold } from 'react-icons/pi';
+import ReviewCards from '../../components/ReviewCards';
 
 const Dashboard = () => {
     // Estados
     const [isLoading, setIsLoading] = useState(true);
-    const [summaryData, setSummaryData] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [reviewData, setReviewData] = useState(null);
     const [transactions, setTransactions] = useState([]);
     const [chartData, setChartData] = useState({});
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentTransaction, setCurrentTransaction] = useState(null);
+
+    const [formatedChartData, setFormatedChartData] = useState({});
+
+
     const [formData, setFormData] = useState({
         description: '',
         amount: '',
-        type: 'expense',
-        date: new Date().toISOString().split('T')[0]
+        type: '',
+        date: new Date().toISOString()
     });
 
-    // Carrega dados iniciais
+    // Carregamento de dados iniciais
     useEffect(() => {
         loadData();
+
+        setFormatedChartData({
+            chartLabels: ["Jan", "Fev", "Mar", "Ab", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+            incomeData: [12000, 19000, 4234, 5545, 5454, 423, 1500, 3423, 4434, 100, 1800, 200],
+            expenseData: [8000, 1200, 1000, 2000, 8000, 3489, 323, 492, 232, 1002, 3233, 12545]
+        });
     }, []);
 
     const loadData = async () => {
         setIsLoading(true);
         try {
-            const data = await fetchCashFlowData();
-            setSummaryData(data.summary);
-            setTransactions(data.transactions);
-            setChartData(transformToChartData(data));
+            // const data = await fetchCashFlowData();
+            // const review {
+            //     totalIncome: 185000,
+            //     totalExpenses: 60000,
+            // }
+            setReviewData({
+                totalIncome: 185000,
+                totalExpenses: 60000,
+            });
+
+            setTransactions([
+                {
+                    id: '1',
+                    date: '2023-05-15',
+                    description: 'Venda de Caju',
+                    amount: 25000,
+                    type: 'income'
+                },
+                {
+                    id: '2',
+                    date: '2023-05-14',
+                    description: 'Aluguel do Armazém',
+                    amount: 8000,
+                    type: 'expense'
+                },
+            ]);
+
+            setChartData(transformToChartData({
+                chartLabels: ["Jan", "Fev", "Mar", "Ab", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                incomeData: [12000, 19000, 4234, 5545, 5454, 423, 1500, 3423, 4434, 100, 1800, 200],
+                expenseData: [8000, 1200, 1000, 2000, 8000, 3489, 323, 492, 232, 1002, 3233, 12545]
+            }));
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
         } finally {
@@ -54,7 +93,7 @@ const Dashboard = () => {
         };
 
         setTransactions([newTransaction, ...transactions]);
-        updateSummary([newTransaction, ...transactions]);
+        updatereview([newTransaction, ...transactions]);
         resetForm();
         setIsModalOpen(false);
     };
@@ -65,16 +104,17 @@ const Dashboard = () => {
             t.id === currentTransaction.id ? { ...t, ...formData, amount: parseFloat(formData.amount) } : t
         );
 
+        console.log(currentTransaction.id);
+
+
         setTransactions(updatedTransactions);
-        updateSummary(updatedTransactions);
+        updatereview(updatedTransactions);
         resetForm();
         setIsModalOpen(false);
     };
 
     const handleDelete = (id) => {
-        const filteredTransactions = transactions.filter(t => t.id !== id);
-        setTransactions(filteredTransactions);
-        updateSummary(filteredTransactions);
+        alert("DELETE: " + id);
     };
 
     const handleEdit = (transaction) => {
@@ -83,12 +123,13 @@ const Dashboard = () => {
             description: transaction.description,
             amount: transaction.amount.toString(),
             type: transaction.type,
-            date: transaction.date.split('T')[0]
+            date: transaction.date
         });
         setIsModalOpen(true);
     };
 
-    const updateSummary = (transactions) => {
+
+    const updatereview = (transactions) => {
         const totalIncome = transactions
             .filter(t => t.type === 'income')
             .reduce((sum, t) => sum + t.amount, 0);
@@ -98,19 +139,17 @@ const Dashboard = () => {
             .reduce((sum, t) => sum + t.amount, 0);
 
 
-        setSummaryData({
+        setReviewData({
             totalIncome,
             totalExpenses,
-            balanceChange: 0, // Simulação
-            incomeChange: 0,
-            expenseChange: 0
         });
+
 
         // Atualiza gráfico
         setChartData(transformToChartData({
-            chartLabels: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
-            incomeData: [12000, 19000, 15000, 18000, totalIncome / 5, 22000],
-            expenseData: [8000, 12000, 10000, 9000, totalExpenses / 5, 11000]
+            chartLabels: ["Jan", "Fev", "Mar", "Ab", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+            incomeData: [12000, 19000, 4234, 5545, 5454, 423, 1500, 3423, 4434, 100, 1800, 200],
+            expenseData: [8000, 1200, 1000, 2000, 8000, 3489, 323, 492, 232, 1002, 3233, 12545]
         }));
     };
 
@@ -119,7 +158,6 @@ const Dashboard = () => {
             description: '',
             amount: '',
             type: 'expense',
-            date: new Date().toISOString().split('T')[0]
         });
         setCurrentTransaction(null);
     };
@@ -181,7 +219,7 @@ const Dashboard = () => {
         );
     }
 
-    if (!summaryData) {
+    if (!reviewData) {
         return (
             <div className="text-center py-10 bg-red-100 text-red-700 rounded border border-red-700">
                 <h2 className="text-xl font-semibold">Erro ao carregar dados</h2>
@@ -263,7 +301,7 @@ const Dashboard = () => {
                                 Nova Transação
                             </button>
                         </motion.div>
-                        <SummaryCards summary={summaryData} />
+                        <ReviewCards review={reviewData} />
                     </div>
                 </div>
 
@@ -307,59 +345,5 @@ const Dashboard = () => {
 };
 
 
-
-// Mock de dados
-async function fetchCashFlowData(range) {
-    // Simula delay de rede
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    // Dados de exemplo
-    const mockData = {
-        monthly: {
-            summary: {
-                balanceChange: 5.2,
-                totalIncome: 185000,
-                incomeChange: 12.3,
-                totalExpenses: 60000,
-                expenseChange: -3.4
-            },
-            transactions: [
-                {
-                    id: '1',
-                    date: '2023-05-15',
-                    description: 'Venda de Caju',
-                    amount: 25000,
-                    type: 'income'
-                },
-                {
-                    id: '2',
-                    date: '2023-05-14',
-                    description: 'Aluguel do Armazém',
-                    amount: 8000,
-                    type: 'expense'
-                },
-                {
-                    id: '3',
-                    date: '2023-05-10',
-                    description: 'Transporte de Mercadorias',
-                    amount: 3500,
-                    type: 'expense'
-                },
-                {
-                    id: '4',
-                    date: '2023-05-05',
-                    description: 'Venda de Mariscos',
-                    amount: 18000,
-                    type: 'income'
-                }
-            ],
-            chartLabels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai'],
-            incomeData: [12000, 19000, 15000, 18000, 25000],
-            expenseData: [8000, 12000, 10000, 9000, 8000]
-        }
-    };
-
-    return mockData[range] || mockData.monthly;
-}
 
 export default Dashboard;

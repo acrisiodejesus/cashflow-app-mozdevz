@@ -1,7 +1,7 @@
 import Card from "./Card";
 import { motion } from "framer-motion";
 
-export default function SummaryCards({ summary, colorPalette }) {
+export default function ReviewCards({ review }) {
     return (
         <div className="space-y-3">
 
@@ -15,10 +15,7 @@ export default function SummaryCards({ summary, colorPalette }) {
             >
                 <Card
                     title="Total de Transações"
-                    value={summary.totalIncome + summary.totalExpenses}
-                    change={summary.balanceChange}
-                    isPositive={summary.balanceChange >= 0}
-                    colorPalette={colorPalette}
+                    value={review.totalIncome + review.totalExpenses}
                 />
             </motion.div>
 
@@ -32,10 +29,7 @@ export default function SummaryCards({ summary, colorPalette }) {
             >
                 <Card
                     title="Total de Receitas"
-                    value={summary.totalIncome}
-                    change={summary.incomeChange}
-                    isPositive={true}
-                    colorPalette={colorPalette}
+                    value={review.totalIncome}
                 />
             </motion.div>
 
@@ -50,10 +44,7 @@ export default function SummaryCards({ summary, colorPalette }) {
             >
                 <Card
                     title="Total de Despesas"
-                    value={summary.totalExpenses}
-                    change={summary.expenseChange}
-                    isPositive={false}
-                    colorPalette={colorPalette}
+                    value={review.totalExpenses}
                 />
 
             </motion.div>

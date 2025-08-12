@@ -21,12 +21,13 @@ export default function Login() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-            <div className="md:max-w-xs w-full space-y-8">
-                <div>
+            <div className="px-5 md:max-w-xs w-full space-y-8">
+                <div className=''>
+                    <strong className='text-4xl w-full flex justify-center animate-bounce duration-500 transition-transform'>✌</strong>
                     <h2 className="mt-6 text-center text-4xl mb-3 uppercase font-extrabold text-[#10B981]">
                         CashFlow
                     </h2>
-                    <p className='w-full text-center'>Aceda as suas transações de fluxo de caixa.</p>
+                    <p className='w-full text-center'>Aceda o seu fluxo de caixa 😜</p>
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <input type="hidden" name="remember" value="true" />
@@ -76,29 +77,22 @@ export default function Login() {
                             </label>
                         </div>
 
-                        <div className="text-sm">
-                            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                Esqueceu sua senha?
-                            </a>
-                        </div>
+                       
                     </div>
 
                     <div>
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3  px-4 border-b-4 border-teal-700 text-sm font-medium rounded-md text-white bg-[#10B981] hover:bg-[#10B981] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:[#10B981]"
+                            className="group relative w-full flex justify-center py-3  px-4 border-b-4 border-teal-700 text-sm font-medium rounded-md text-white bg-[#10B981] hover:bg-[#10B981] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:[#10B981] hover:scale-95 hover:opacity-80 active:scale-105 duration-500 transition-all"
                         >
                             {!isLoad ? <span>Entrar</span> : <i className='animate-spin duration-300 transition-all'><ImSpinner6 size={16} color='#FFFFFF' /></i>}
                         </button>
                     </div>
                 </form>
 
-                <div className="text-center text-sm text-gray-600">
+                <div className="text-center text-xs text-gray-400">
                     <p>
-                        Não tem uma conta?{' '}
-                        <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                            Cadastre-se
-                        </a>
+                        @2025 | MozDevz - Nampula
                     </p>
                 </div>
             </div>
