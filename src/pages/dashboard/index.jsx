@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import TransactionList from '../../components/TransactionList';
 import TransactionModal from '../../components/TransactionModal';
 import Chart from 'react-apexcharts';
-import { motion } from 'framer-motion';
 import { FiLoader } from 'react-icons/fi';
 import { TbCashRegister } from 'react-icons/tb';
 import { LuActivity } from 'react-icons/lu';
@@ -35,7 +34,7 @@ const Dashboard = () => {
    const loadData = async () => {
     setIsLoading(true);
     try {
-        await axios.get("http://127.0.0.1:5000/api/transactions", {
+        await axios.get(`${process.env.REACT_APP_API_URL}/transactions`, {
             headers: {
                 Authorization: "Bearer " + token
             }
@@ -89,7 +88,7 @@ const Dashboard = () => {
             type: formData.type,
         };
 
-        const status = await axios.post("http://127.0.0.1:5000/api/transactions", newTransaction, {
+        const status = await axios.post(`${process.env.REACT_APP_API_URL}/transactions`, newTransaction, {
             headers: {
                 Authorization: "Bearer " + token,
                 "Content-Type": "application/json"

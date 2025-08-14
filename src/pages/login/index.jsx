@@ -12,7 +12,7 @@ export default function Login() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoad(true);
-            axios.post("http://127.0.0.1:5000/api/login", {username, password}).
+            axios.post(`${process.env.REACT_APP_API_URL}/login`, {username, password}).
             then((response) => response.data).
             then((data) => {
                 const token = data.access_token;
