@@ -9,7 +9,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [isLoad, setIsLoad] = useState(false);
 
-    const handleSubmit = (e) => {
+    const login = (e) => {
         e.preventDefault();
         setIsLoad(true);
             axios.post("http://127.0.0.1:5000/api/login", {username, password}).
@@ -19,8 +19,12 @@ export default function Login() {
                 localStorage.setItem("token", token);
                 navigate("/dashboard");
             }).
-            catch((error) => console.error(error));
-            
+            catch((error) => {
+                console.error(error)
+                setIsLoad(false)
+                alert("Usuario ou senha invalida!")
+            });
+            navigate("/");
     };
 
     return (
@@ -33,7 +37,7 @@ export default function Login() {
                     </h2>
                     <p className='w-full text-center'>Aceda o seu fluxo de caixa 😜</p>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                <form className="mt-8 space-y-6" onSubmit={login}>
                     <input type="hidden" name="remember" value="true" />
                     <div className="rounded-md shadow-sm space-y-4">
                         <div>

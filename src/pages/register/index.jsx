@@ -10,7 +10,7 @@ export default function Register() {
         const [password, setPassword] = useState('');
         const [isLoad, setIsLoad] = useState(false);
     
-        const handleSubmit = (e) => {
+        const register = (e) => {
             e.preventDefault();
             setIsLoad(true);
             
@@ -26,6 +26,7 @@ export default function Register() {
                 })
                 .catch(function (error) {
                     console.error(error);
+                    alert("Erro! Tente mais tarde.");
                 });
         };
     
@@ -39,7 +40,7 @@ export default function Register() {
                                 Nova conta 
                             </h2>
                         </div>
-                        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                        <form className="mt-8 space-y-6" onSubmit={register}>
                             <input type="hidden" name="remember" value="true" />
                             <div className="rounded-md shadow-sm space-y-4">
                                 <div>

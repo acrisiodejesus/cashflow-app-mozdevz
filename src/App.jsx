@@ -11,6 +11,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<h1 className="w-full h-screen font-bold flex items-center justify-center">NOT FOUND</h1>} />
       </Routes>
     </BrowserRouter>
   )
