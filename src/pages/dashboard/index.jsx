@@ -8,8 +8,12 @@ import { TbCashRegister } from 'react-icons/tb';
 import { LuActivity } from 'react-icons/lu';
 import { PiCirclesThreePlusBold } from 'react-icons/pi';
 import ReviewCards from '../../components/ReviewCards';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const Dashboard = () => {
+    const navigate = useNavigate();
     // Estados
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,167 +23,169 @@ const Dashboard = () => {
     const [chartData, setChartData] = useState({});
     const [currentTransaction, setCurrentTransaction] = useState(null);
 
-    const [formatedChartData, setFormatedChartData] = useState({});
 
+    const [formData, setFormData] = useState({});
 
-    const [formData, setFormData] = useState({
-        description: '',
-        amount: '',
-        type: '',
-        date: new Date().toISOString()
-    });
-
+    const token = localStorage.getItem("token") ? localStorage.getItem("token") : navigate("/");
     // Carregamento de dados iniciais
     useEffect(() => {
         loadData();
-
-        setFormatedChartData({
-            chartLabels: ["Jan", "Fev", "Mar", "Ab", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-            incomeData: [12000, 19000, 4234, 5545, 5454, 423, 1500, 3423, 4434, 100, 1800, 200],
-            expenseData: [8000, 1200, 1000, 2000, 8000, 3489, 323, 492, 232, 1002, 3233, 12545]
-        });
     }, []);
 
-    const loadData = async () => {
-        setIsLoading(true);
-        try {
-            // const data = await fetchCashFlowData();
-            // const review {
-            //     totalIncome: 185000,
-            //     totalExpenses: 60000,
-            // }
-            setReviewData({
-                totalIncome: 185000,
-                totalExpenses: 60000,
+   const loadData = async () => {
+    setIsLoading(true);
+    try {
+        await axios.get("http://127.0.0.1:5000/api/transactions", {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        }).then((res) => res.data).then((data) => {
+            setTransactions(data);
+
+            // Organizar dados do Gráfico e Cards aqui, dentro do .then
+            const chartLabels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+            let inputTransaction = new Array(12).fill(0);
+            let outputTransaction = new Array(12).fill(0);
+            let totalInput = 0;
+            let totalOutput = 0;
+
+            data.forEach(transaction => {
+                const date = new Date(transaction.date);
+                const month = date.getMonth();
+                if (transaction.type === "entrada") {
+                    totalInput += transaction.amount;
+                    inputTransaction[month] += transaction.amount;
+                } else if (transaction.type === "saida") {
+                    totalOutput += transaction.amount;
+                    outputTransaction[month] += transaction.amount;
+                }
             });
 
-            setTransactions([
-                {
-                    id: '1',
-                    date: '2023-05-15',
-                    description: 'Venda de Caju',
-                    amount: 25000,
-                    type: 'income'
-                },
-                {
-                    id: '2',
-                    date: '2023-05-14',
-                    description: 'Aluguel do Armazém',
-                    amount: 8000,
-                    type: 'expense'
-                },
-            ]);
+            setReviewData({
+                totalInput,
+                totalOutput,
+            });
 
-            setChartData(transformToChartData({
-                chartLabels: ["Jan", "Fev", "Mar", "Ab", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-                incomeData: [12000, 19000, 4234, 5545, 5454, 423, 1500, 3423, 4434, 100, 1800, 200],
-                expenseData: [8000, 1200, 1000, 2000, 8000, 3489, 323, 492, 232, 1002, 3233, 12545]
-            }));
-        } catch (error) {
-            console.error('Erro ao carregar dados:', error);
-        } finally {
-            setIsLoading(false);
+            setChartData(transformToChartData({ chartLabels, inputTransaction, outputTransaction }));
+        }).catch((err) => console.error(err));
+    } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+    } finally {
+        setIsLoading(false);
+    }
+};
+
+
+
+
+    // CRUD
+
+    // Adiciona nova transação    
+    const addTransaction = async (e) => {
+        e.preventDefault();
+        const newTransaction = {
+            description: formData.description,
+            amount: parseFloat(formData.amount),
+            type: formData.type,
+        };
+
+        const status = await axios.post("http://127.0.0.1:5000/api/transactions", newTransaction, {
+            headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json"
+            }
+        }).then((res) => res.status)
+            .catch((err) => console.error(err));
+        if (status == 201) {
+            setIsModalOpen(false);
+            resetForm();
+            loadData();
+        } else {
+            alert("Erro inesperado");
+        }
+
+
+
+    };
+
+    const updateTransaction = async (e) => {
+        e.preventDefault();
+
+        const id = currentTransaction.id;
+        const transaction = {
+            amount: formData.amount,
+            type: formData.type,
+            description: formData.description
+        }
+        const status = await axios.put(`http://127.0.0.1:5000/api/transactions/${id}`, transaction, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }
+        }).then((res) => res.status).catch((err) => console.error("ERR: " + err))
+
+        if (status == 200) {
+            setIsModalOpen(false);
+            resetForm();
+            loadData();
+        } else {
+            alert("Erro inesperado");
         }
     };
 
-    // CRUD Operations
-    const handleCreate = async (e) => {
-        e.preventDefault();
-        const newTransaction = {
-            id: Date.now().toString(),
-            ...formData,
-            amount: parseFloat(formData.amount),
-            date: new Date(formData.date).toISOString()
-        };
+    const deleteTransaction = async (id) => {
+        const status = await axios.delete(`http://127.0.0.1:5000/api/transactions/${id}`, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("token")
+            }
+        }).then((res) => res.status).catch((err) => console.error("ERR: " + err))
 
-        setTransactions([newTransaction, ...transactions]);
-        updatereview([newTransaction, ...transactions]);
-        resetForm();
-        setIsModalOpen(false);
+        if (status == 200) {
+            loadData();
+        } else {
+            alert("Erro inesperado");
+        }
     };
 
-    const handleUpdate = async (e) => {
-        e.preventDefault();
-        const updatedTransactions = transactions.map(t =>
-            t.id === currentTransaction.id ? { ...t, ...formData, amount: parseFloat(formData.amount) } : t
-        );
-
-        console.log(currentTransaction.id);
-
-
-        setTransactions(updatedTransactions);
-        updatereview(updatedTransactions);
-        resetForm();
-        setIsModalOpen(false);
-    };
-
-    const handleDelete = (id) => {
-        alert("DELETE: " + id);
-    };
-
-    const handleEdit = (transaction) => {
+    const getEdit = (transaction) => {
         setCurrentTransaction(transaction);
         setFormData({
             description: transaction.description,
             amount: transaction.amount.toString(),
             type: transaction.type,
-            date: transaction.date
         });
         setIsModalOpen(true);
     };
 
 
-    const updatereview = (transactions) => {
-        const totalIncome = transactions
-            .filter(t => t.type === 'income')
-            .reduce((sum, t) => sum + t.amount, 0);
-
-        const totalExpenses = transactions
-            .filter(t => t.type === 'expense')
-            .reduce((sum, t) => sum + t.amount, 0);
-
-
-        setReviewData({
-            totalIncome,
-            totalExpenses,
-        });
-
-
-        // Atualiza gráfico
-        setChartData(transformToChartData({
-            chartLabels: ["Jan", "Fev", "Mar", "Ab", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-            incomeData: [12000, 19000, 4234, 5545, 5454, 423, 1500, 3423, 4434, 100, 1800, 200],
-            expenseData: [8000, 1200, 1000, 2000, 8000, 3489, 323, 492, 232, 1002, 3233, 12545]
-        }));
-    };
 
     const resetForm = () => {
         setFormData({
             description: '',
             amount: '',
-            type: 'expense',
+            type: '',
         });
         setCurrentTransaction(null);
     };
 
     // Configurações do gráfico
-    const transformToChartData = (rawData) => {
+    const transformToChartData = (chartData) => {
         return {
             series: [
                 {
                     name: 'Entradas',
-                    data: rawData.incomeData,
+                    data: chartData.inputTransaction,
                     color: "#10B981"
                 },
                 {
                     name: 'Saídas',
-                    data: rawData.expenseData,
+                    data: chartData.outputTransaction,
                     color: "#EF4444"
                 }
             ],
             options: {
                 chart: {
                     type: 'area',
+                    zoom: false,
                     stacked: false,
                     toolbar: {
                         show: false,
@@ -189,7 +195,7 @@ const Dashboard = () => {
                     enabled: false,
                 },
                 xaxis: {
-                    categories: rawData.chartLabels,
+                    categories: chartData.chartLabels,
                     axisBorder: {
                         show: false,
                     }
@@ -208,7 +214,7 @@ const Dashboard = () => {
         };
     };
 
-    // Renderização condicional
+    // Loader
     if (isLoading) {
         return (
             <div className="flex justify-center items-center min-h-screen bg-gray-50">
@@ -219,19 +225,12 @@ const Dashboard = () => {
         );
     }
 
-    if (!reviewData) {
-        return (
-            <div className="text-center py-10 bg-red-100 text-red-700 rounded border border-red-700">
-                <h2 className="text-xl font-semibold">Erro ao carregar dados</h2>
-                <p>Por favor, tente novamente mais tarde</p>
-            </div>
-        );
-    }
+
 
     return (
         <div className="min-h-screen p-2 py-4 md:p-8 bg-gray-50">
             <div className="max-w-7xl mx-auto">
-                {/* Cabeçalho */}
+
                 <header className="mb-8 text-gray-900">
                     <div>
                         <h1 className="text-3xl flex items-center font-bold uppercase text-[#10B981]"><TbCashRegister size={36} /> CashFlow</h1>
@@ -244,7 +243,7 @@ const Dashboard = () => {
 
 
 
-                {/* Grid Principal */}
+
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
                     {/* Gráfico */}
                     <div className="lg:col-span-2">
@@ -282,7 +281,7 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    {/* Cartões de Resumo */}
+                    {/* Cards de Resumo */}
                     <div>
 
 
@@ -290,8 +289,8 @@ const Dashboard = () => {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{
-                                delay: 2,
-                                duration: 2.8
+                                delay: 1,
+                                duration: 1.8
                             }}>
 
                             <button
@@ -318,22 +317,23 @@ const Dashboard = () => {
                     <div className="overflow-hidden mb-20">
                         <TransactionList
                             transactions={transactions}
-                            onEdit={handleEdit}
-                            onDelete={handleDelete}
+                            onEdit={getEdit}
+                            onDelete={deleteTransaction}
                         />
                     </div>
                 </motion.div>
             </div>
 
-            {/* Modal para CRUD */}
+            {/* Modal do formulario */}
             {isModalOpen && (
 
                 <TransactionModal
                     formData={formData}
                     setFormData={setFormData}
                     currentTransaction={currentTransaction}
-                    onSubmit={currentTransaction ? handleUpdate : handleCreate}
+                    onSubmit={currentTransaction ? updateTransaction : addTransaction}
                     onClose={() => {
+                        loadData();
                         setIsModalOpen(false);
                         resetForm();
                     }}

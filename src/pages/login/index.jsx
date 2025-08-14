@@ -1,22 +1,26 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { ImSpinner6 } from 'react-icons/im';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoad, setIsLoad] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoad(true);
-        if (email.length > 9 && password.length >= 4) {
-            navigate("dashboard");
-        }
-        console.error("Erro de logi");
-        setIsLoad(false);
-        console.log('Email:', email, 'Password:', password);
+            axios.post("http://127.0.0.1:5000/api/login", {username, password}).
+            then((response) => response.data).
+            then((data) => {
+                const token = data.access_token;
+                localStorage.setItem("token", token);
+                navigate("/dashboard");
+            }).
+            catch((error) => console.error(error));
+            
     };
 
     return (
@@ -33,18 +37,18 @@ export default function Login() {
                     <input type="hidden" name="remember" value="true" />
                     <div className="rounded-md shadow-sm space-y-4">
                         <div>
-                            <label htmlFor="email" className="sr-only">
-                                Email
+                            <label htmlFor="username" className="sr-only">
+                                username
                             </label>
                             <input
-                                id="email"
-                                name="email"
-                                type="email"
+                                id="username"
+                                name="username"
+                                type="text"
                                 required
                                 className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                                placeholder="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Usuário"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                         </div>
                         <div>
@@ -88,6 +92,7 @@ export default function Login() {
                             {!isLoad ? <span>Entrar</span> : <i className='animate-spin duration-300 transition-all'><ImSpinner6 size={16} color='#FFFFFF' /></i>}
                         </button>
                     </div>
+                    <p className='text-sm w-full text-center'>Nao tens conta? <a className='text-blue-500 underline hover:no-underline' href="/register">Crie aqui.</a></p>
                 </form>
 
                 <div className="text-center text-xs text-gray-400">

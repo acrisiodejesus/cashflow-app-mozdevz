@@ -34,9 +34,9 @@ export default function TransactionList({ transactions, onEdit, onDelete }) {
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium"  >
                                         {transaction.description}
                                     </td>
-                                    <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+                                    <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium ${transaction.type === 'entrada' ? 'text-green-600' : 'text-red-600'
                                         }`}>
-                                        {transaction.type === 'income' ? '+' : '-'}
+                                        {transaction.type === 'entrada' ? '+' : '-'}
                                         {new Intl.NumberFormat('MZ', {
                                             style: 'currency',
                                             currency: 'MZN'

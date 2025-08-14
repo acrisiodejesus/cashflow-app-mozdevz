@@ -15,7 +15,7 @@ export default function ReviewCards({ review }) {
             >
                 <Card
                     title="Total de Transações"
-                    value={review.totalIncome + review.totalExpenses}
+                    value={review.totalInput + review.totalOutput}
                 />
             </motion.div>
 
@@ -29,7 +29,7 @@ export default function ReviewCards({ review }) {
             >
                 <Card
                     title="Total de Receitas"
-                    value={review.totalIncome}
+                    value={review.totalInput}
                 />
             </motion.div>
 
@@ -44,7 +44,7 @@ export default function ReviewCards({ review }) {
             >
                 <Card
                     title="Total de Despesas"
-                    value={review.totalExpenses}
+                    value={review.totalOutput}
                 />
 
             </motion.div>

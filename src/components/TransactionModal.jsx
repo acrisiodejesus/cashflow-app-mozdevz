@@ -47,26 +47,12 @@ export default function TransactionModal({ formData, setFormData, currentTransac
                                     required
                                 >
                                     <option value="">Selecione</option>
-                                    <option value="income">Entrada</option>
-                                    <option value="expense">Saida</option>
+                                    <option value="entrada">Entrada</option>
+                                    <option value="saida">Saida</option>
                                 </select>
                             </div>
 
-                            <div>
-                                <label htmlFor="description" className="block text-sm font-medium" >
-                                    Descrição
-                                </label>
-                                <input
-                                    type="text"
-                                    id="description"
-                                    name="description"
-                                    value={formData.description}
-                                    onChange={handleChange}
-                                    placeholder="Ex. Compra de roupas"
-                                    className="mt-1 block w-full rounded-md text-gray-800 border-2 outline-[#10B981]/80 focus:ring-teal-600 py-3 px-2 font-semibold bg-white"
-                                    required
-                                />
-                            </div>
+
 
                             <div>
                                 <label htmlFor="amount" className="block text-sm font-medium" >
@@ -87,19 +73,22 @@ export default function TransactionModal({ formData, setFormData, currentTransac
                             </div>
 
                             <div>
-                                <label htmlFor="date" className="block text-sm font-medium" >
-                                    Data
+                                <label htmlFor="description" className="block text-sm font-medium" >
+                                    Descrição
                                 </label>
                                 <input
-                                    type="date"
-                                    id="date"
-                                    name="date"
-                                    value={formData.date}
+                                    type="text"
+                                    id="description"
+                                    name="description"
+                                    value={formData.description}
                                     onChange={handleChange}
+                                    placeholder="Ex. Compra de roupas"
                                     className="mt-1 block w-full rounded-md text-gray-800 border-2 outline-[#10B981]/80 focus:ring-teal-600 py-3 px-2 font-semibold bg-white"
                                     required
                                 />
                             </div>
+
+
                         </div>
 
                         <div className="mt-6 flex justify-end space-x-5">
