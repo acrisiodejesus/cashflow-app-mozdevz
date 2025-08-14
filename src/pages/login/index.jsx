@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { ImSpinner6 } from 'react-icons/im';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoad, setIsLoad] = useState(false);
@@ -12,19 +12,7 @@ export default function Login() {
     const login = (e) => {
         e.preventDefault();
         setIsLoad(true);
-            axios.post("http://127.0.0.1:5000/api/login", {username, password}).
-            then((response) => response.data).
-            then((data) => {
-                const token = data.access_token;
-                localStorage.setItem("token", token);
-                navigate("/dashboard");
-            }).
-            catch((error) => {
-                console.error(error)
-                setIsLoad(false)
-                alert("Usuario ou senha invalida!")
-            });
-            navigate("/");
+        alert("Login aqui")
     };
 
     return (

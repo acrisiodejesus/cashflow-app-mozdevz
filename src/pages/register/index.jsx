@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { ImSpinner6 } from "react-icons/im";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 export default function Register() {
 
-     const navigate = useNavigate();
+    //  const navigate = useNavigate();
         const [username, setUsername] = useState('');
         const [password, setPassword] = useState('');
         const [isLoad, setIsLoad] = useState(false);
@@ -13,21 +13,7 @@ export default function Register() {
         const register = (e) => {
             e.preventDefault();
             setIsLoad(true);
-            
-            axios.post('http://127.0.0.1:5000/api/register', {
-                username,
-                password
-                })
-                .then(function (response) {
-                    if(response.status == 201) {
-                        setIsLoad(false);
-                        navigate("/");
-                    }
-                })
-                .catch(function (error) {
-                    console.error(error);
-                    alert("Erro! Tente mais tarde.");
-                });
+           alert("Register aqui")
         };
     
 
