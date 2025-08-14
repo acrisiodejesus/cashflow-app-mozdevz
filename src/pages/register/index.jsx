@@ -14,20 +14,18 @@ export default function Register() {
             e.preventDefault();
             setIsLoad(true);
             
-            axios.post(`${process.env.REACT_APP_API_URL}/register`, {
-                username,
-                password
-                }
-                .then(function (response) {
+            axios.post(`${process.env.REACT_APP_API_URL}/register`, {username,password})
+            .then(function (response) {
                     if(response.status == 201) {
                         setIsLoad(false);
                         navigate("/");
                     }
-                })
-                .catch(function (error) {
-                    console.error(error);
-                });
-        };
+            })
+            .catch(function (error) {
+                console.error(error);
+            })
+
+        }
     
 
     return (
