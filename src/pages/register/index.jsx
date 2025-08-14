@@ -9,12 +9,12 @@ export default function Register() {
         const [username, setUsername] = useState('');
         const [password, setPassword] = useState('');
         const [isLoad, setIsLoad] = useState(false);
-    
+         const apiUrl = import.meta.env.VITE_API_URL;
         const handleSubmit = (e) => {
             e.preventDefault();
             setIsLoad(true);
             
-            axios.post(`${process.env.REACT_APP_API_URL}/register`, {username,password})
+            axios.post(`${apiUrl}/register`, {username,password})
             .then(function (response) {
                     if(response.status == 201) {
                         setIsLoad(false);

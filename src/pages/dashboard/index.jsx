@@ -21,7 +21,7 @@ const Dashboard = () => {
     const [transactions, setTransactions] = useState([]);
     const [chartData, setChartData] = useState({});
     const [currentTransaction, setCurrentTransaction] = useState(null);
-
+ const apiUrl = import.meta.env.VITE_API_URL;
 
     const [formData, setFormData] = useState({});
 
@@ -34,7 +34,7 @@ const Dashboard = () => {
    const loadData = async () => {
     setIsLoading(true);
     try {
-        await axios.get(`${process.env.REACT_APP_API_URL}/transactions`, {
+        await axios.get(`${apiUrl}/transactions`, {
             headers: {
                 Authorization: "Bearer " + token
             }
@@ -88,7 +88,7 @@ const Dashboard = () => {
             type: formData.type,
         };
 
-        const status = await axios.post(`${process.env.REACT_APP_API_URL}/transactions`, newTransaction, {
+        const status = await axios.post(`${apiUrl}/transactions`, newTransaction, {
             headers: {
                 Authorization: "Bearer " + token,
                 "Content-Type": "application/json"
@@ -116,7 +116,7 @@ const Dashboard = () => {
             type: formData.type,
             description: formData.description
         }
-        const status = await axios.put(`http://127.0.0.1:5000/api/transactions/${id}`, transaction, {
+        const status = await axios.put(`${apiUrl}/transactions/${id}`, transaction, {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("token")
             }
@@ -132,7 +132,7 @@ const Dashboard = () => {
     };
 
     const deleteTransaction = async (id) => {
-        const status = await axios.delete(`http://127.0.0.1:5000/api/transactions/${id}`, {
+        const status = await axios.delete(`${apiUrl}/transactions/${id}`, {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("token")
             }

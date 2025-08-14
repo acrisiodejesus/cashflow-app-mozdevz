@@ -7,12 +7,12 @@ export default function Login() {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoad, setIsLoad] = useState(false);
-
+    const [isLoad, setIsLoad] = useState(false)
+    const apiUrl = import.meta.env.VITE_API_URL;
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoad(true);
-            axios.post(`${process.env.REACT_APP_API_URL}/login`, {username, password}).
+            axios.post(`${apiUrl}/login`, {username, password}).
             then((response) => response.data).
             then((data) => {
                 const token = data.access_token;
